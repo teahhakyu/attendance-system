@@ -16,12 +16,45 @@ if(isset($_POST['submit'])){
     $subject_lecturer = $MySQLi_CON->real_escape_string(trim($_POST['lecturer']));
     $subject_session = $MySQLi_CON->real_escape_string(trim($_POST['session']));
     
-    
-    
 	$query = $MySQLi_CON->query("SELECT * FROM subject where subject_name = '$subject_name' and subject_session = '$subject_session' and subject_lecturer = '$subject_lecturer'");
     $itemRow = $query->fetch_array();
 	
-    if($itemRow['subject_name'] == $subject_name && $itemRow['subject_session'] == $subject_session && $itemRow['subject_lecturer'] == $subject_lecturer){
+	if($_POST['subject'] == "" && $_POST['lecturer'] == "" && $_POST['session'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer, subject and session cannot be empty!
+					</div>';
+	}
+	else if($_POST['subject'] == "" && $_POST['lecturer'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer and subject cannot be empty!
+					</div>';
+	}
+	else if($_POST['subject'] == "" && $_POST['session'] == ""){
+		$msg = '<div class="text-danger">
+						Session and subject cannot be empty!
+					</div>';
+	}
+	else if($_POST['lecturer'] == "" && $_POST['session'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer and session cannot be empty!
+					</div>';
+	}
+	else if($_POST['session'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer name cannot be empty!
+					</div>';
+	}
+	else if($_POST['lecturer'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer id cannot be empty!
+					</div>';
+	}
+	else if($_POST['subject'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer id cannot be empty!
+					</div>';
+	}
+    else if($itemRow['subject_name'] == $subject_name && $itemRow['subject_session'] == $subject_session && $itemRow['subject_lecturer'] == $subject_lecturer){
          $msg = '<div class="text-danger">
                     This subject already have lecturer assigned in this session!
                 </div>';
@@ -196,7 +229,7 @@ if(isset($_POST['submit'])){
                             <label for="year">Subject&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                                 <select class="form-control" name="subject">
-                                    <option value="0">Choose the Subject</option>
+                                    <option value="">Choose the Subject</option>
                                     <option value="ICT 1000">ICT 1000</option>
                                     <option value="ICT 1100">ICT 1100</option>
                                     <option value="ICT 1200">ICT 1200</option>
@@ -208,7 +241,7 @@ if(isset($_POST['submit'])){
                             <label for="lecturer">Lecturer&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                                 <select class="form-control" name="lecturer">
-                                    <option value="#">Choose the Lecturer</option>
+                                    <option value="">Choose the Lecturer</option>
                                     <?php
                                     
                                     /* Connect database */
@@ -229,7 +262,7 @@ if(isset($_POST['submit'])){
                             <label for="session">Session&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                                 <select class="form-control" name="session">
-                                    <option value="#">Choose the Session</option>
+                                    <option value="">Choose the Session</option>
                                     <?php
                                     
                                     /* Connect database */

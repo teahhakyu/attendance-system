@@ -22,8 +22,13 @@ if(isset($_POST['submit'])){
     
     $query = $MySQLi_CON->query("SELECT * FROM subject where subject_name = '$subject_name' and subject_session = '$subject_session'");
     $itemRow = $query->fetch_array();
-  
-    if($itemRow['subject_name'] == $subject_name && $itemRow['subject_session'] == $subject_session){
+	
+	if($_POST['subject'] == "" || $_POST['date'] == "" || $_POST['session'] == ""){
+		$msg = '<div class="text-danger">
+						Please fill in all the fields!
+					</div>';
+	}
+    else if($itemRow['subject_name'] == $subject_name && $itemRow['subject_session'] == $subject_session){
 		$query2 = $MySQLi_CON->query("SELECT * FROM attendance where subject_name = '$subject_name' and subject_session = '$subject_session' and date = '$date'");
 		$itemRow2 = $query2->fetch_array();
 		if($itemRow2['subject_name'] == $subject_name && $itemRow2['subject_session'] == $subject_session && $itemRow2['date'] == $date){
@@ -167,7 +172,7 @@ if(isset($_POST['submit'])){
                             <label for="session">Session&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                                 <select class="form-control" name="session" onChange="showData(this.value)">
-                                    <option value="#">Choose the Session</option>
+                                    <option value="">Choose the Session</option>
                                     <?php
                                     
                                     /* Connect database */
@@ -188,7 +193,7 @@ if(isset($_POST['submit'])){
 							<label for="year">Subject&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                                 <select class="form-control" name="subject" id="state-list">
-                                    <option value="0" >Choose the Subject</option>
+                                    <option value="" >Choose the Subject</option>
 									
 									
                                     
@@ -199,7 +204,7 @@ if(isset($_POST['submit'])){
 							<label for="date">Date&nbsp;&ast;</label>
 							<div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
 								
-									<input class="form-control" name="date" size="16" type="text" placeholder="yyyy-mm-dd" id="form_datetime">
+									<input class="form-control" name="date" size="16" type="text" placeholder="yyyy-mm-dd" id="form_datetime" value="">
 
 								
 							</div><br>

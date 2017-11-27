@@ -1,4 +1,5 @@
 <?php
+session_id("session1");
 session_start();
 
 /* Connect database */
@@ -15,7 +16,7 @@ if(isset($_POST['submit'])){
     $month = $MySQLi_CON->real_escape_string(trim($_POST['month']));
     $session = $year." / ".$month;
     
-    $query = $MySQLi_CON->query("SELECT * FROM session");
+    $query = $MySQLi_CON->query("SELECT * FROM session Where session = '$session'" );
     $itemRow = $query->fetch_array();
     
     if($itemRow['session'] == $session){
@@ -23,6 +24,21 @@ if(isset($_POST['submit'])){
                     Session already added!
                 </div>';
     }
+	else if($_POST['year'] == '0' && $_POST['month'] == '0'){
+		$msg = '<div class="text-danger">
+						Year and month cannot be empty!
+					</div>';
+	}
+	else if($_POST['year'] == '0'){
+		$msg = '<div class="text-danger">
+						Year cannot be empty!
+					</div>';
+	}
+	else if($_POST['month'] == '0'){
+		$msg = '<div class="text-danger">
+						Month cannot be empty!
+					</div>';
+	}
     else{
         $query_2 = $MySQLi_CON->query("INSERT INTO session(session) VALUES('$session')");
         
