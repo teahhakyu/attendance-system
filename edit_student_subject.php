@@ -20,11 +20,15 @@ $itemRow = $query_data->fetch_array();
 /* Add data function */
 if(isset($_POST['submit'])){
     $subject_name = $MySQLi_CON->real_escape_string(trim($_POST['subject']));
-    $subject_lecturer = $MySQLi_CON->real_escape_string(trim($_POST['lecturer']));
+
     
     $query = $MySQLi_CON->query("UPDATE student_subject SET subject_name = '$subject_name' WHERE id = '$id'");
-    
-    if($query){
+    if($_POST['subject'] == ""){
+		$msg = '<div class="text-danger">
+						Subject cannot be empty!
+					</div>';
+	}
+    else if($query){
         $msg = '<div class="text-success">
                     Data updated successfully!
                 </div>';
@@ -149,7 +153,7 @@ if(isset($_POST['submit'])){
                             <label for="subject">Subject&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                                 <select class="form-control" name="subject">
-                                    <option value="#">Choose the Subject</option>
+                                    <option value="">Choose the Subject</option>
                                     <?php
                                     if(isset($_POST['subject'])){
                                         $selected_Item = $_POST['subject'];

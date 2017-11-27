@@ -1,4 +1,5 @@
 <?php
+session_id("session1");
 session_start();
 
 /* Connect database */
@@ -14,14 +15,42 @@ if(isset($_POST['submit'])){
     $lecturer_id = $MySQLi_CON->real_escape_string(trim($_POST['lecturer_id']));
     $lecturer_name = $MySQLi_CON->real_escape_string(trim($_POST['lecturer_name']));
     
-    $query = $MySQLi_CON->query("SELECT * FROM lecturer");
+    $query = $MySQLi_CON->query("SELECT * FROM lecturer where lecturer_id = '$lecturer_id'");
     $itemRow = $query->fetch_array();
     
-    if($itemRow['lecturer_id'] == $lecturer_id){
-        $msg = '<div class="text-danger">
-                    Lecturer ID exist!
-                </div>';
+    $query2 = $MySQLi_CON->query("SELECT * FROM lecturer where lecturer_name = '$lecturer_name'");
+    $itemRow2 = $query2->fetch_array();
+	
+	if($_POST['lecturer_name'] == "" && $_POST['lecturer_id'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer id and name cannot be empty!
+					</div>';
+	}
+	else if($_POST['lecturer_name'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer name cannot be empty!
+					</div>';
+	}
+	else if($_POST['lecturer_id'] == ""){
+		$msg = '<div class="text-danger">
+						Lecturer id cannot be empty!
+					</div>';
+	}
+	else if($itemRow['lecturer_id'] == $lecturer_id && $itemRow['lecturer_name'] == $lecturer_name){
+		$msg = '<div class="text-danger">
+						Lecturer ID and name exist!
+					</div>';
     }
+	else if($itemRow['lecturer_id'] == $lecturer_id && $itemRow['lecturer_name'] != $lecturer_name){
+		$msg = '<div class="text-danger">
+						Lecturer ID exist!
+					</div>';
+    }
+	else if($itemRow2['lecturer_id'] != $lecturer_id && $itemRow2['lecturer_name'] == $lecturer_name){
+		$msg = '<div class="text-danger">
+						Lecturer name exist!
+					</div>';
+	}
     else{
         $query = $MySQLi_CON->query("INSERT INTO lecturer(lecturer_id, lecturer_name) "
             . "VALUES('$lecturer_id','$lecturer_name')");
@@ -191,12 +220,12 @@ if(isset($_POST['submit'])){
                         <div class="form-group">
                             <label for="lectuere_id">Lecturer ID&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
-                                <input type="text" class="form-control" name="lecturer_id" placeholder="Lectuer ID"><br>
+                                <input type="text" class="form-control" name="lecturer_id" placeholder="Lecturer ID" value=""><br>
                             </div>
                             
                             <label for="lectuere_name">Lecturer Name&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
-                                <input type="text" class="form-control" name="lecturer_name" placeholder="Lectuer Name"><br>
+                                <input type="text" class="form-control" name="lecturer_name" placeholder="Lecturer Name" value=""><br>
                             </div>
                             
                             <div class="form-group">

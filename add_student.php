@@ -16,12 +16,18 @@ if(isset($_POST['submit'])){
     $student_nric = $MySQLi_CON->real_escape_string(trim($_POST['student_nric']));
     $student_course = $MySQLi_CON->real_escape_string(trim($_POST['student_course']));
     
-    $query = $MySQLi_CON->query("SELECT * FROM student");
+    $query = $MySQLi_CON->query("SELECT * FROM student where student_id = '$student_id'");
     $itemRow = $query->fetch_array();
     
-    if($itemRow['student_id'] == $student_id && $itemRow['student_nric'] == $student_nric){
+	
+	if($_POST['student_id'] == "" || $_POST['student_name'] == "" || $_POST['student_nric'] == "" || $_POST['student_course'] == ""){
+		$msg = '<div class="text-danger">
+						Please fill in all the fields!
+					</div>';
+	}
+    else if($itemRow['student_id'] == $student_id && $itemRow['student_name'] == $student_name && $itemRow['student_nric'] == $student_nric && $itemRow['student_course'] == $student_course){
         $msg = '<div class="text-danger">
-                    Student ID or Student NRIC exist!
+                    Student ID, student name, student NRIC, and student course exist!
                 </div>';
     }
     else{
@@ -193,23 +199,23 @@ if(isset($_POST['submit'])){
                         <div class="form-group">
                             <label for="lectuere_id">Student ID&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
-                                <input type="text" class="form-control" name="student_id" placeholder="Student ID"><br>
+                                <input type="text" class="form-control" name="student_id" placeholder="Student ID" value=""><br>
                             </div>
                             
                             <label for="student_name">Student Name&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
-                                <input type="text" class="form-control" name="student_name" placeholder="Student Name"><br>
+                                <input type="text" class="form-control" name="student_name" placeholder="Student Name" value=""><br>
                             </div>
                             
                             <label for="student_nric">Student NRIC&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
-                                <input type="text" class="form-control" name="student_nric" placeholder="Student NRIC"><br>
+                                <input type="text" class="form-control" name="student_nric" placeholder="Student NRIC" value=""><br>
                             </div>
                             
                             <label for="year">Student Course&nbsp;&ast;</label>
                             <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                                 <select class="form-control" name="student_course">
-                                    <option value="0">Choose the course</option>
+                                    <option value="">Choose the course</option>
                                     <option value="Diploma in Business">Diploma in Business</option>
                                     <option value="Diploma in Information Technology & Communication">Diploma in Information Technology & Communication</option>
                                     <option value="Diploma in Electronic & Electrical">Diploma in Electronic & Electrical</option>
