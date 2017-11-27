@@ -24,7 +24,7 @@
 												$session = $sessionRow['subject_session'];
 												if($session == $value){
 													
-													echo '<option value="'.$sessionRow['id'].'" name="'.$sessionRow['subject_name'].'">'.$sessionRow['subject_name'].'</option>';
+													echo '<option value="'.$sessionRow['subject_name'].'" name="'.$sessionRow['subject_name'].'">'.$sessionRow['subject_name'].'</option>';
 													//echo '<option value="'.$sessionRow['session'].'" name="'.$sessionRow['session'].'">'.$sessionRow['session'].'</option>';
 													
 												}
